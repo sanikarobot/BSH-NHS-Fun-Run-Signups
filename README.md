@@ -1,3 +1,3 @@
 # BSH-NHS-Fun-Run-SignUps
-# A new and improved signup system for the NHS fun run at Bend High. Also Sanika and Aaron's CAS project. Updates to come.
-#### The goal of this project is to improve the signup process from the system used in the 2024 school year. The issue that was encountered was that...
+## A new and improved signup system for the NHS fun run at Bend High. Also Sanika and Aaron's CAS project. Updates to come.
+The goal of this project is to improve the signup process from the system used in the 2024 school year. The issue that was encountered was that the current system created a lot of confusion, especially among the people running the signups. The people would have to consult a Google Form in order to view information about the runners for the 5K in order to see whether or not they had signed up, and then needed to give them another waiver. In addition, there are many other functionalities that would be appreciated by the registration 
