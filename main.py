@@ -21,10 +21,10 @@ def menu():
     :return:
     """
     clear_screen()
-    # haha mainframe
     title_font = ("Lato", 15)
     title = Label(text="Welcome to NHS Management!", font=title_font)
     title.pack()
+    # haha mainframe
     main_frame = LabelFrame(text="Options", padx=5, pady=5, borderwidth=2, highlightbackground="red")
     main_frame.pack()
     find_student_button = Button(main_frame, text="Find Student", command=find_student)
