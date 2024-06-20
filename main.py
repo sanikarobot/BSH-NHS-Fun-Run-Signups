@@ -27,21 +27,22 @@ def menu():
     title = customtkinter.CTkLabel(win, text="Main Menu", font=title_font)
     title.grid(row=0, column=0)
     # haha mainframe
-    main_frame = customtkinter.CTkFrame(win, height=300, corner_radius=0)
-    main_frame.grid(row=1, column=0, ipady=200)
+    main_frame = customtkinter.CTkFrame(win, height=300, corner_radius=10)
+    main_frame.grid(row=1, column=0, ipady=200, rowspan=138)
     option_label = customtkinter.CTkLabel(main_frame, text="Options", font=("font1", 20))
     option_label.grid(row=0, column=0, padx=50, pady=3)
     find_student_button = customtkinter.CTkButton(main_frame, text="Find Student", command=find_student)
     find_student_button.grid(row=1, column=0, padx=50, pady=3)
-    import_button = customtkinter.CTkButton(main_frame, text="Import Spreadsheet", command=import_spreadsheet())
+    import_button = customtkinter.CTkButton(main_frame, text="Import Spreadsheet", command=import_spreadsheet)
     import_button.grid(row=2, column=0, padx=50, pady=3)
-    export_button = customtkinter.CTkButton(main_frame, text="Export Information", command=export_information())
+    export_button = customtkinter.CTkButton(main_frame, text="Export Information", command=export_information)
     export_button.grid(row=3, column=0, padx=50, pady=3)
     help_button = customtkinter.CTkButton(main_frame, text="Help", command=help_page)
     help_button.grid(row=4, column=0, padx=50, pady=3)
 
-    guide = customtkinter.CTkLabel(win, text="Select an option \n from the left!", width=20, anchor="n", font=("font1", 20))
-    guide.grid(row=0, column=1, columnspan=2, ipadx=50)
+    guide = customtkinter.CTkLabel(win, text="Select an option \n from the left!", width=20, anchor="n",
+                                   font=("font1", 20))
+    guide.grid(row=1, column=1, columnspan=2, ipadx=50)
 
 
 
@@ -51,6 +52,9 @@ def help_page():
     Gives an overview of the program (through text?).
     :return:
     """
+    clear_screen()
+    menu_button = customtkinter.CTkButton(win, text="Return to main menu", command=menu)
+    menu_button.pack()
 
 
 def import_spreadsheet():
@@ -59,6 +63,26 @@ def import_spreadsheet():
     the passed parameters and then return to main menu.
     :return:
     """
+    # Get the file name from the user
+    clear_screen()
+    main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
+    main_frame.pack()
+    title = customtkinter.CTkLabel(main_frame, text="Import Spreadsheet", font=("font1", 25))
+    title.grid(row=0, column=0, columnspan=2)
+    help_text = customtkinter.CTkLabel(main_frame,
+                                       text="Put in the name of the \n spreadsheet you want \n to import from. "
+                                       "This \n must be in the same \n folder as the program.")
+    help_text.grid(row=1, column=1, padx=8)
+    frame = customtkinter.CTkFrame(main_frame, corner_radius=6)
+    frame.grid(row=1, column=0, ipady=30)
+    field = customtkinter.CTkEntry(frame, placeholder_text="Put the name of the spreadsheet in here.", fg_color="grey",
+                                   text_color="#000000", placeholder_text_color="#1f1f1f")
+    field.grid(row=0, column=0, ipadx=120, pady=8, padx=10)
+    submit_button = customtkinter.CTkButton(frame, text="Submit File Name")
+    submit_button.grid(row=0, column=1, padx=10)
+    exit_button = customtkinter.CTkButton(main_frame, text="Quit to main menu", command=menu)
+    exit_button.grid(row=3, column=0, columnspan=2)
+    win.geometry("700x300")
 
 
 def export_information():
@@ -66,7 +90,28 @@ def export_information():
     Exports a file containing information about each student's volunteering/tutoring hours as well as their club status.
     :return:
     """
+    # Get the file name from the user
+    clear_screen()
+    main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
+    main_frame.pack()
+    title = customtkinter.CTkLabel(main_frame, text="Export Spreadsheet", font=("font1", 25))
+    title.grid(row=0, column=0, columnspan=2)
+    help_text = customtkinter.CTkLabel(main_frame,
+                                       text="Put in the name of \n the file you want \n to export to. ")
+    help_text.grid(row=1, column=1, padx=8)
+    frame = customtkinter.CTkFrame(main_frame, corner_radius=6)
+    frame.grid(row=1, column=0, ipady=30)
+    field = customtkinter.CTkEntry(frame, placeholder_text="Put the name of the spreadsheet in here.", fg_color="grey",
+                                   text_color="#000000", placeholder_text_color="#1f1f1f")
+    field.grid(row=0, column=0, ipadx=120, pady=8, padx=10)
+    submit_button = customtkinter.CTkButton(frame, text="Submit File Name")
+    submit_button.grid(row=0, column=1, padx=10)
+    exit_button = customtkinter.CTkButton(main_frame, text="Quit to main menu", command=menu)
+    exit_button.grid(row=3, column=0, columnspan=2)
+    win.geometry("700x300")
 
+    # thread = threading.Thread(target=function)
+    # thread.start()
 
 def find_student():
     """
@@ -74,6 +119,10 @@ def find_student():
     individual logs.
     :return:
     """
+
+
+    # thread = threading.Thread(target=function)
+    # thread.start()
 
 
 def manage_person():
@@ -108,6 +157,7 @@ def edit_entries():
     """
 
 
+clear_screen()
 menu()
 win.geometry("420x400")
 win.mainloop()
