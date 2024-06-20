@@ -1,14 +1,36 @@
-import tkinter as tk
+from tkinter import *
 from time import sleep
 import threading
 import pickle
+
+win = Tk()
+
+
+def clear_screen():
+    """
+    Destroys all of the items on the window, thus clearing the screen.
+    """
+    for child in win.winfo_children():
+        child.destroy()
 
 
 def menu():
     """
     Main menu. Displays buttons which lead to different pages, as well as an option to go to a help page.
+    Buttons: find_student, import spreadsheet, export information, and a help page button.
     :return:
     """
+    clear_screen()
+    # haha mainframe
+    title_font = ("Lato", 15)
+    title = Label(text="Welcome to NHS Management!", font=title_font)
+    title.pack()
+    main_frame = LabelFrame(text="Options", padx=5, pady=5, borderwidth=2, highlightbackground="red")
+    main_frame.pack()
+    find_student_button = Button(main_frame, text="Find Student", command=find_student)
+    find_student_button.pack()
+
+
 
 
 def help_page():
@@ -33,7 +55,7 @@ def export_information():
     """
 
 
-def find_person():
+def find_student():
     """
     Brings up a search function that will allow for searching of various club members. This doesn't search for
     individual logs.
@@ -71,4 +93,9 @@ def edit_entries():
     with all the changes logged within it.
     :return:
     """
+
+
+menu()
+win.geometry("400x400")
+win.mainloop()
 
