@@ -6,7 +6,7 @@ import pickle
 
 win = customtkinter.CTk()
 customtkinter.set_appearance_mode("Dark")
-
+win.title("National Honor Society Management Portal")
 
 def clear_screen():
     """
@@ -23,12 +23,13 @@ def menu():
     :return:
     """
     clear_screen()
+    win.geometry("420x220")
     title_font = ("font1", 25)
     title = customtkinter.CTkLabel(win, text="Main Menu", font=title_font)
     title.grid(row=0, column=0)
     # haha mainframe
     main_frame = customtkinter.CTkFrame(win, height=300, corner_radius=10)
-    main_frame.grid(row=1, column=0, ipady=200, rowspan=138)
+    main_frame.grid(row=1, column=0, ipady=30, rowspan=138)
     option_label = customtkinter.CTkLabel(main_frame, text="Options", font=("font1", 20))
     option_label.grid(row=0, column=0, padx=50, pady=3)
     find_student_button = customtkinter.CTkButton(main_frame, text="Find Student", command=find_student)
@@ -159,6 +160,5 @@ def edit_entries():
 
 clear_screen()
 menu()
-win.geometry("420x400")
 win.mainloop()
 
