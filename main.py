@@ -1,9 +1,11 @@
 from tkinter import *
+import customtkinter
 from time import sleep
 import threading
 import pickle
 
-win = Tk()
+win = customtkinter.CTk()
+customtkinter.set_appearance_mode("Dark")
 
 
 def clear_screen():
@@ -21,14 +23,25 @@ def menu():
     :return:
     """
     clear_screen()
-    title_font = ("Lato", 15)
-    title = Label(text="Welcome to NHS Management!", font=title_font)
-    title.pack()
+    title_font = ("font1", 25)
+    title = customtkinter.CTkLabel(win, text="Main Menu", font=title_font)
+    title.grid(row=0, column=0)
     # haha mainframe
-    main_frame = LabelFrame(text="Options", padx=5, pady=5, borderwidth=2, highlightbackground="red")
-    main_frame.pack()
-    find_student_button = Button(main_frame, text="Find Student", command=find_student)
-    find_student_button.pack()
+    main_frame = customtkinter.CTkFrame(win, height=300, corner_radius=0)
+    main_frame.grid(row=1, column=0, ipady=200)
+    option_label = customtkinter.CTkLabel(main_frame, text="Options", font=("font1", 20))
+    option_label.grid(row=0, column=0, padx=50, pady=3)
+    find_student_button = customtkinter.CTkButton(main_frame, text="Find Student", command=find_student)
+    find_student_button.grid(row=1, column=0, padx=50, pady=3)
+    import_button = customtkinter.CTkButton(main_frame, text="Import Spreadsheet", command=import_spreadsheet())
+    import_button.grid(row=2, column=0, padx=50, pady=3)
+    export_button = customtkinter.CTkButton(main_frame, text="Export Information", command=export_information())
+    export_button.grid(row=3, column=0, padx=50, pady=3)
+    help_button = customtkinter.CTkButton(main_frame, text="Help", command=help_page)
+    help_button.grid(row=4, column=0, padx=50, pady=3)
+
+    guide = customtkinter.CTkLabel(win, text="Select an option \n from the left!", width=20, anchor="n", font=("font1", 20))
+    guide.grid(row=0, column=1, columnspan=2, ipadx=50)
 
 
 
@@ -96,6 +109,6 @@ def edit_entries():
 
 
 menu()
-win.geometry("400x400")
+win.geometry("420x400")
 win.mainloop()
 
