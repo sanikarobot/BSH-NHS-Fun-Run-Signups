@@ -7,6 +7,8 @@ import pickle
 win = customtkinter.CTk()
 customtkinter.set_appearance_mode("Dark")
 win.title("National Honor Society Management Portal")
+entry = customtkinter.CTkEntry(win)
+
 
 def clear_screen():
     """
@@ -126,14 +128,13 @@ def find_student():
     title.grid(row=0, column=0)
     frame = customtkinter.CTkFrame(main_frame, corner_radius=6)
     frame.grid(row=1, column=0)
+    global entry
     entry = customtkinter.CTkEntry(frame, placeholder_text="Student Name")
     entry.grid(row=0, column=0)
     win.bind("<Key>", populate_buttons)
 
 
 
-    # thread = threading.Thread(target=function)
-    # thread.start()
 
 
 def populate_buttons(key_pressed):
