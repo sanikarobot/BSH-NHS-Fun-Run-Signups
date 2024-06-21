@@ -46,8 +46,6 @@ def menu():
     guide.grid(row=1, column=1, columnspan=2, ipadx=50)
 
 
-
-
 def help_page():
     """
     Gives an overview of the program (through text?).
@@ -118,12 +116,34 @@ def find_student():
     """
     Brings up a search function that will allow for searching of various club members. This doesn't search for
     individual logs.
+    needed: search field, continuous search,
     :return:
     """
+    clear_screen()
+    main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
+    main_frame.pack()
+    title = customtkinter.CTkLabel(main_frame, text="Find Student", font=("font1", 25))
+    title.grid(row=0, column=0)
+    frame = customtkinter.CTkFrame(main_frame, corner_radius=6)
+    frame.grid(row=1, column=0)
+    entry = customtkinter.CTkEntry(frame, placeholder_text="Student Name")
+    entry.grid(row=0, column=0)
+    win.bind("<Key>", populate_buttons)
+
 
 
     # thread = threading.Thread(target=function)
     # thread.start()
+
+
+def populate_buttons(key_pressed):
+    """
+    When searching for a user, this function will execute. This will check and remove any buttons that do not match
+    with the search query and will add any which do match with the search query. This will execute once per call, but
+    not continuously.
+    :return:
+    """
+    print(key_pressed)
 
 
 def manage_person():
