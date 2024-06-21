@@ -2,6 +2,10 @@
 
 class Student:
 
+
+    # We should also add in a notes section as well
+
+
     next_student_id = 0
 
     def __init__(self, name):
