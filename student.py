@@ -75,9 +75,7 @@ class Student:
             if type(i) != Tutor and type(i) == Volunteer:
                 self.volunteerHours = self.volunteerHours + i.time
         return self.volunteerHours
-    
-    volunteerThread = Thread(target=getTotalVolunteerHours)
-    volunteerThread.start()
+
 
     """ This function is essentially the same, but for the tutoring activites."""
     def getTotalTutorHours(self)-> float:
@@ -86,8 +84,6 @@ class Student:
                 self.tutorHours = self.tutorHours + i.time
         return self.tutorHours
 
-    tutorThread = Thread(target=getTotalTutorHours)
-    tutorThread.start()
 
     """ This function adds up the results of the getVolunteerHoursFunction and the getTutorHours function to get the total hours spent meeting NHS requirements."""
     def getTotalHours(self)-> float:
