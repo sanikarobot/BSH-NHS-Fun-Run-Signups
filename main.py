@@ -10,6 +10,7 @@ import volunteer
 # Button dictionary for find_student search. Allows for the program to keep track of what buttons are on the screen.
 buttons = {}
 
+
 win = customtkinter.CTk()
 customtkinter.set_appearance_mode("Dark")
 win.title("National Honor Society Management Portal")
