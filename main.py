@@ -21,10 +21,10 @@ entries = []
 volunteer_entries = []
 tutoring_entries = []
 
-student1 = student.Student("Sanika")
-student2 = student.Student("Marley")
-student3 = student.Student("Aaron")
-student4 = student.Student("Samantha")
+student1 = student.Student("Sanika", "good", 11, "hi")
+student2 = student.Student("Marley", "good", 11, "hi")
+student3 = student.Student("Aaron", "good", 11, "hi")
+student4 = student.Student("Samantha", "good", 11, "hi")
 students.append(student1)
 students.append(student2)
 students.append(student3)
@@ -260,21 +260,6 @@ def edit_student_information():
     """
 
 
-
-def edit_volunteer_entries():
-    """
-    Allows for changes to entries. This can change the contents of the spreadsheet, or it can create a new spreadsheet
-    with all the changes logged within it.
-    :return:
-    """
-
-
-def edit_tutoring_entries():
-    """
-    Allows for changes to entries. This can change the contents of the spreadsheet, or it can create a new spreadsheet
-    with all the changes logged within it.
-    :return:
-    """
 
 
 clear_screen()
