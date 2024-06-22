@@ -10,7 +10,7 @@ class Student:
 
     next_student_id = 0
 
-    def __init__(self, name, status, grade: int, email, volunteerHours=0, tutorHours=0)-> None:
+    def __init__(self, name: str, status: str, grade: int, email: str, volunteerHours=0, tutorHours=0)-> None:
 
         """ Here we declare our varibles. 
         Because we do not want our name, email, grade, or status varibles to be easily changed we use properties to store then such that it is hard to accidentally change them
@@ -72,7 +72,7 @@ class Student:
     For all the volunteer activities it adds up the time spent working on them"""
     def getTotalVolunteerHours(self)-> float:
         for i in self.log:
-            if type(i) == Volunteer:
+            if type(i) != Tutor and type(i) == Volunteer:
                 self.volunteerHours = self.volunteerHours + i.time
         return self.volunteerHours
     
