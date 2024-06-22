@@ -10,7 +10,7 @@ class Student:
 
     next_student_id = 0
 
-    def __init__(self, name: str, status: str, grade: int, email: str, volunteerHours=0, tutorHours=0)-> None:
+    def __init__(self, name: str, status: int, grade: int, email: str, volunteerHours=0, tutorHours=0)-> None:
 
         """ Here we declare our varibles. 
         Because we do not want our name, email, grade, or status varibles to be easily changed we use properties to store then such that it is hard to accidentally change them
@@ -43,7 +43,7 @@ class Student:
         self._student_id = student_id
 
     @property
-    def status(self) -> str:
+    def status(self) -> int:
         return self._status
     
     @status.setter
@@ -90,7 +90,7 @@ class Student:
         vHours = self.getTotalVolunteerHours()
         tHours = self.getTotalTutorHours()
         totalHours = vHours + tHours
-        return tHours
+        return totalHours
 
 
 
