@@ -46,7 +46,7 @@ def menu():
     :return:
     """
     clear_screen()
-    win.geometry("420x220")
+    win.geometry("420x270")
     title_font = ("font1", 25)
     title = customtkinter.CTkLabel(win, text="Main Menu", font=title_font)
     title.grid(row=0, column=0)
@@ -143,6 +143,7 @@ def find_student():
     needed: search field, continuous search,
     :return:
     """
+    win.geometry("300x400")
     clear_screen()
     main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
     main_frame.pack()
@@ -159,12 +160,12 @@ def find_student():
     global scrollable_frame
     scrollable_frame = customtkinter.CTkScrollableFrame(main_frame, label_text="Matching Students")
     scrollable_frame.grid(row=2, column=0)
+    button_creator_setup()
 
 
-def button_creator_setup(event):
+def button_creator_setup(event=None):
     print(event)
-    thread = threading.Thread(target=populate_buttons)
-    thread.start()
+    populate_buttons()
 
 
 def populate_buttons(key_pressed=None):
@@ -174,8 +175,6 @@ def populate_buttons(key_pressed=None):
     not continuously.
     :return:
     """
-    print(key_pressed)
-    # Get search term
     query = entry.get().lower().strip()
     # Search inside the students list
     for index, local_student in enumerate(students):
@@ -185,12 +184,12 @@ def populate_buttons(key_pressed=None):
             # Create a button with a command that gets the student assigned to the button.
             button = customtkinter.CTkButton(scrollable_frame, text=local_student.name,
                                              command=lambda: manage_student(local_student))
-            button.grid(row=index, column=0)
+            button.grid(row=index, column=0, padx=30, pady=1)
             buttons[local_student] = button
         # If there exists a button for a student but the student name no longer starts with the search query,
         # then the button needs to be destroyed.
         # Also, remove the student from the buttons' dictionary.
-        elif local_student.name in buttons and not local_student.name.lower().strip().startswith(query):
+        elif local_student in buttons and not local_student.name.lower().strip().startswith(query):
             button = buttons[local_student]
             button.destroy()
             buttons.pop(local_student)
@@ -204,14 +203,15 @@ def manage_student(member):
     necessary***. Also provides buttons which allow for management of the member.
     :return:
     """
-    win.unbind("<Key>", "button_creator_setup()")
+    win.unbind("<Key>")
     clear_screen()
+    win.geometry("600x340")
     main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
     main_frame.pack()
     title = customtkinter.CTkLabel(main_frame, text="Manage Student", font=("font1", 25))
     title.grid(row=0, column=0, columnspan=4)
     info_frame = customtkinter.CTkScrollableFrame(main_frame, label_text="Member Information")
-    info_frame.grid(row=1, column=0, ipadx=8, ipady=8, padx=10  )
+    info_frame.grid(row=1, column=0, ipadx=8, ipady=8, padx=10, rowspan=10)
     volunteer_hours_label = customtkinter.CTkLabel(info_frame, text="Volunteer Hours: Not implemented")
     volunteer_hours_label.grid(row=0, column=0, padx=5, pady=5)
     tutoring_hours_label = customtkinter.CTkLabel(info_frame, text="Tutoring Hours: Not implemented")
@@ -225,6 +225,7 @@ def manage_student(member):
     actions_frame.grid(row=1, column=1, ipadx=8, ipady=8, padx=10)
     actions_frame_title = customtkinter.CTkLabel(actions_frame, text="Actions")
     actions_frame_title.grid(row=0, column=0)
+    actions_frame.anchor("n")
     edit_volunteer_entries_button = customtkinter.CTkButton(actions_frame, text="Edit Volunteering Entries",
                                                             command=edit_volunteer_entries)
     edit_volunteer_entries_button.grid(row=1, column=0, padx=5, pady=5)
@@ -238,6 +239,8 @@ def manage_student(member):
     manage_club_standing_button = customtkinter.CTkButton(actions_frame, text="Manage Club Standing",
                                                           command=manage_club_standing)
     manage_club_standing_button.grid(row=4, column=0, padx=5, pady=5)
+    quit_button = customtkinter.CTkButton(main_frame, text="Return to main menu", command=menu)
+    quit_button.grid(row=3, column=1, padx=10, pady=10)
 
 
 def manage_club_standing():
@@ -246,6 +249,7 @@ def manage_club_standing():
     be manually changed to be in good standing, poor standing, tenuous standing, or eligible for cords.
     :return:
     """
+    clear_screen()
 
 
 def edit_student_information():
@@ -254,6 +258,7 @@ def edit_student_information():
     grade. This does not change information inside of the spreadsheet, rather just what is displayed within the program.
     :return:
     """
+
 
 
 def edit_volunteer_entries():
