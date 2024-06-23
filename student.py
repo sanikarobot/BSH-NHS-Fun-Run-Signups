@@ -10,7 +10,7 @@ class Student:
 
     next_student_id = 0
 
-    def __init__(self, name: str, status: int, grade: int, email: str, volunteerHours=0, tutorHours=0)-> None:
+    def __init__(self, name: str, status: int, grade: int, email: str, notes: str, volunteerHours=0, tutorHours=0)-> None:
 
         """ Here we declare our varibles. 
         Because we do not want our name, email, grade, or status varibles to be easily changed we use properties to store then such that it is hard to accidentally change them
@@ -71,6 +71,7 @@ class Student:
     """ This function gets the total time a club member has spent volunteering by running through their list of activies and checking if every activity is a volunteer activity or not.
     For all the volunteer activities it adds up the time spent working on them"""
     def getTotalVolunteerHours(self)-> float:
+        self.volunteerHours = 0
         for i in self.log:
             if type(i) != Tutor and type(i) == Volunteer:
                 self.volunteerHours = self.volunteerHours + i.time
@@ -79,6 +80,7 @@ class Student:
 
     """ This function is essentially the same, but for the tutoring activites."""
     def getTotalTutorHours(self)-> float:
+        self.tutorHours = 0
         for i in self.log:
             if type(i) == Tutor:
                 self.tutorHours = self.tutorHours + i.time

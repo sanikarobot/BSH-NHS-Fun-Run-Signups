@@ -228,12 +228,12 @@ def manage_student(member):
     actions_frame_title = customtkinter.CTkLabel(actions_frame, text="Actions")
     actions_frame_title.grid(row=0, column=0)
     actions_frame.anchor("n")
-    edit_volunteer_entries_button = customtkinter.CTkButton(actions_frame, text="Edit Volunteering Entries",
+    '''edit_volunteer_entries_button = customtkinter.CTkButton(actions_frame, text="Edit Volunteering Entries",
                                                             command=edit_volunteer_entries)
     edit_volunteer_entries_button.grid(row=1, column=0, padx=5, pady=5)
     edit_tutoring_entries_button = customtkinter.CTkButton(actions_frame, text="Edit Tutoring Entries",
                                                            command=edit_tutoring_entries)
-    edit_tutoring_entries_button.grid(row=2, column=0, padx=5, pady=5)
+    edit_tutoring_entries_button.grid(row=2, column=0, padx=5, pady=5)'''
 
     edit_student_information_button = customtkinter.CTkButton(actions_frame, text="Edit Student Information",
                                                               command=edit_student_information)

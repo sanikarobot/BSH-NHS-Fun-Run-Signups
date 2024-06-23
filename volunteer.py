@@ -1,12 +1,16 @@
 from threading import Thread
 
 class Volunteer():
-    def __init__(self, name: str, email: str, date: str, time: float, location: str) -> None:
+    def __init__(self, name: str, email: str, date: str, time: float, location: str, notes: str) -> None:
         self.name = name
         self.email = email
         self.date = date
         self.time = time
         self.location = location
+        self.month = ""
+        self.day = ""
+        self.year = ""
+        self.dateInts = []
 
     @property
     def name(self)-> str:
@@ -48,9 +52,48 @@ class Volunteer():
     def location(self, location)-> None:
         self._location = location
         
-
-
-    # We should also add in a notes section as well
-
-
-    pass
+    # We should also add in a notes section as 
+    
+    def analyizeDate(self):
+        if "/" in self.date:
+            self.dateInts = self.date.split("/")
+        elif "-" in self.date:
+            self.date.split('-')
+        return self.dateInts
+    
+    def getMonth(self)-> str:
+        numMonth = self.dateInts[0]
+        self.month = ""
+        if numMonth == 1:
+            self.month = "January"
+        elif numMonth == 2:
+            self.month = "February"
+        elif numMonth == 3:
+            self.month = "March"
+        elif numMonth == 4:
+            self.month = "April"
+        elif numMonth == 5:
+            self.month = "May"
+        elif numMonth == 6:
+            self.month = "June"
+        elif numMonth == 7:
+            self.month = "July"
+        elif numMonth == 8:
+            self.month = "August"
+        elif numMonth == 9:
+            self.month = "September"
+        elif numMonth == 10:
+            self.month = "October"
+        elif numMonth == 11:
+            self.month = "Novemeber"
+        elif numMonth == 12:
+            self.month = "December"
+        return self.month
+    
+    def getDay(self)-> str:
+        self.day = self.dateInts[1]
+        return self.day
+    
+    def getYear(self)-> str:
+        self.year = self.dateInts[2]
+        return self.year
