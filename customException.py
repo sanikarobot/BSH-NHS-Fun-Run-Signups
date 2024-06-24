@@ -5,4 +5,5 @@ class CustomException(Exception):
     This class inherits from Exception and provides the same functionality.
     """
     def __init__(self, message):
-        super.__init__(message)
+        super().__init__(message)
+
