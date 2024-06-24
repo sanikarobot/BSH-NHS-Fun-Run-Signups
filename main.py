@@ -23,10 +23,10 @@ volunteer_entries = []
 tutoring_entries = []
 
 
-student1 = student.Student("Sanika", "good", 11, "hi")
-student2 = student.Student("Marley", "good", 11, "hi")
-student3 = student.Student("Aaron", "good", 11, "hi")
-student4 = student.Student("Samantha", "good", 11, "hi")
+student1 = student.Student(name="Sanika", status=0, grade=11, email="hi")
+student2 = student.Student("Marley", 1, 11, "hi")
+student3 = student.Student("Aaron", 2, 11, "hi")
+student4 = student.Student("Samantha", 3, 12, "hi")
 students.append(student1)
 students.append(student2)
 students.append(student3)
@@ -47,6 +47,9 @@ def menu():
     Buttons: find_student, import spreadsheet, export information, and a help page button.
     :return:
     """
+    win.unbind("<Key>")
+    global buttons
+    buttons = {}
     clear_screen()
     win.geometry("420x270")
     title_font = ("font1", 25)
@@ -185,7 +188,8 @@ def populate_buttons(key_pressed=None):
         if local_student.name.lower().strip().startswith(query) and not local_student in buttons:
             # Create a button with a command that gets the student assigned to the button.
             button = customtkinter.CTkButton(scrollable_frame, text=local_student.name,
-                                             command=lambda: manage_student(local_student))
+                                             command=lambda passed_student=local_student:
+                                             manage_student(passed_student))
             button.grid(row=index, column=0, padx=30, pady=1)
             buttons[local_student] = button
         # If there exists a button for a student but the student name no longer starts with the search query,
@@ -205,8 +209,10 @@ def manage_student(member):
     necessary***. Also provides buttons which allow for management of the member.
     :return:
     """
-    win.unbind("<Key>")
     clear_screen()
+    win.unbind("<Key>")
+    global buttons
+    buttons = {}
     win.geometry("600x340")
     main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
     main_frame.pack()
@@ -214,44 +220,56 @@ def manage_student(member):
     title.grid(row=0, column=0, columnspan=4)
     info_frame = customtkinter.CTkScrollableFrame(main_frame, label_text="Member Information")
     info_frame.grid(row=1, column=0, ipadx=8, ipady=8, padx=10, rowspan=10)
-    volunteer_hours_label = customtkinter.CTkLabel(info_frame, text="Volunteer Hours: Not implemented")
-    volunteer_hours_label.grid(row=0, column=0, padx=5, pady=5)
-    tutoring_hours_label = customtkinter.CTkLabel(info_frame, text="Tutoring Hours: Not implemented")
-    tutoring_hours_label.grid(row=1, column=0, padx=5, pady=5)
-    club_standing_label = customtkinter.CTkLabel(info_frame, text="Club Standing: Not implemented")
-    club_standing_label.grid(row=2, column=0, padx=5, pady=5)
-    notes_label = customtkinter.CTkLabel(info_frame, text="Notes: Not implemented")
-    notes_label.grid(row=3, column=0, padx=5, pady=5)
-
+    name_label = customtkinter.CTkLabel(info_frame, justify="left",
+                                        text="Name: " + str(member.name) + "\n\nVolunteer Hours: "
+                                        + str(member.volunteerHours) + "\n\nTutoring Hours: " + str(member.tutorHours) +
+                                        "\n\nClub Standing: " + member.getStatusString() + "\n\nNotes: " + member.notes)
+    name_label.grid(row=0, column=0, padx=5, pady=5)
+    """
+    volunteer_hours_label = customtkinter.CTkLabel(info_frame, text="Volunteer Hours: " + str(member.volunteerHours))
+    volunteer_hours_label.grid(row=1, column=0, padx=5, pady=5)
+    tutoring_hours_label = customtkinter.CTkLabel(info_frame, text="Tutoring Hours: " + str(member.tutorHours))
+    tutoring_hours_label.grid(row=2, column=0, padx=5, pady=5)
+    club_standing_label = customtkinter.CTkLabel(info_frame, text="Club Standing: " + member.getStatusString())
+    club_standing_label.grid(row=3, column=0, padx=5, pady=5)
+    notes_label = customtkinter.CTkLabel(info_frame, text="Notes: " + member.notes)
+    notes_label.grid(row=4, column=0, padx=5, pady=5)
+    """
     actions_frame = customtkinter.CTkFrame(main_frame)
     actions_frame.grid(row=1, column=1, ipadx=8, ipady=8, padx=10)
     actions_frame_title = customtkinter.CTkLabel(actions_frame, text="Actions")
     actions_frame_title.grid(row=0, column=0)
     actions_frame.anchor("n")
-    '''edit_volunteer_entries_button = customtkinter.CTkButton(actions_frame, text="Edit Volunteering Entries",
-                                                            command=edit_volunteer_entries)
-    edit_volunteer_entries_button.grid(row=1, column=0, padx=5, pady=5)
-    edit_tutoring_entries_button = customtkinter.CTkButton(actions_frame, text="Edit Tutoring Entries",
-                                                           command=edit_tutoring_entries)
-    edit_tutoring_entries_button.grid(row=2, column=0, padx=5, pady=5)'''
 
     edit_student_information_button = customtkinter.CTkButton(actions_frame, text="Edit Student Information",
                                                               command=edit_student_information)
     edit_student_information_button.grid(row=3, column=0, padx=5, pady=5)
     manage_club_standing_button = customtkinter.CTkButton(actions_frame, text="Manage Club Standing",
-                                                          command=manage_club_standing)
+                                                          command=lambda passed_member=member:
+                                                          manage_club_standing(passed_member))
     manage_club_standing_button.grid(row=4, column=0, padx=5, pady=5)
     quit_button = customtkinter.CTkButton(main_frame, text="Return to main menu", command=menu)
     quit_button.grid(row=3, column=1, padx=10, pady=10)
 
 
-def manage_club_standing():
+def manage_club_standing(member):
     """
     Provides options to add a flag to a member denoting their current status within the club. This is where people can
     be manually changed to be in good standing, poor standing, tenuous standing, or eligible for cords.
     :return:
     """
     clear_screen()
+    main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
+    main_frame.pack()
+    title = customtkinter.CTkLabel(main_frame, text="Change Club Standing", font=("font1", 25))
+    title.grid(row=0, column=0, columnspan=4)
+    radiobutton_frame = customtkinter.CTkFrame(main_frame)
+    radio_button_1 = customtkinter.CTkRadioButton(master=radiobutton_frame, variable=radio_var, value=0)
+    radio_button_1.grid(row=1, column=2, pady=10, padx=20, sticky="n")
+    radio_button_2 = customtkinter.CTkRadioButton(master=radiobutton_frame, variable=radio_var, value=1)
+    radio_button_2.grid(row=2, column=2, pady=10, padx=20, sticky="n")
+    radio_button_3 = customtkinter.CTkRadioButton(master=radiobutton_frame, variable=radio_var, value=2)
+    radio_button_3.grid(row=3, column=2, pady=10, padx=20, sticky="n")
 
 
 def edit_student_information():
