@@ -1,3 +1,4 @@
+import tkinter
 from tkinter import *
 import customtkinter
 from time import sleep
@@ -252,24 +253,55 @@ def manage_student(member):
     quit_button.grid(row=3, column=1, padx=10, pady=10)
 
 
-def manage_club_standing(member):
+def manage_club_standing(member: student.Student):
     """
     Provides options to add a flag to a member denoting their current status within the club. This is where people can
     be manually changed to be in good standing, poor standing, tenuous standing, or eligible for cords.
     :return:
     """
     clear_screen()
+    radio_var = tkinter.IntVar(value=member.status)
     main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
     main_frame.pack()
     title = customtkinter.CTkLabel(main_frame, text="Change Club Standing", font=("font1", 25))
     title.grid(row=0, column=0, columnspan=4)
+
     radiobutton_frame = customtkinter.CTkFrame(main_frame)
-    radio_button_1 = customtkinter.CTkRadioButton(master=radiobutton_frame, variable=radio_var, value=0)
-    radio_button_1.grid(row=1, column=2, pady=10, padx=20, sticky="n")
-    radio_button_2 = customtkinter.CTkRadioButton(master=radiobutton_frame, variable=radio_var, value=1)
-    radio_button_2.grid(row=2, column=2, pady=10, padx=20, sticky="n")
-    radio_button_3 = customtkinter.CTkRadioButton(master=radiobutton_frame, variable=radio_var, value=2)
-    radio_button_3.grid(row=3, column=2, pady=10, padx=20, sticky="n")
+    radiobutton_frame.grid(row=1, column=1, ipadx=30, padx=50)
+    radio_button_1 = customtkinter.CTkRadioButton(master=radiobutton_frame, variable=radio_var, value=0,
+                                                  text="Poor")
+    radio_button_1.grid(row=1, column=2, pady=10, padx=20, sticky="w")
+    radio_button_2 = customtkinter.CTkRadioButton(master=radiobutton_frame, variable=radio_var, value=1,
+                                                  text="Medium")
+    radio_button_2.grid(row=2, column=2, pady=10, padx=20, sticky="w")
+    radio_button_3 = customtkinter.CTkRadioButton(master=radiobutton_frame, variable=radio_var, value=2,
+                                                  text="Good")
+    radio_button_3.grid(row=3, column=2, pady=10, padx=20, sticky="w")
+    radio_button_4 = customtkinter.CTkRadioButton(master=radiobutton_frame, variable=radio_var, value=3,
+                                                  text="On Track for Cords")
+    radio_button_4.grid(row=4, column=2, pady=10, padx=20, sticky="w")
+
+    student_information_frame = customtkinter.CTkFrame(main_frame)
+    student_information_frame.grid(row=1, column=0, ipadx=90, ipady=60)
+    name_label = customtkinter.CTkLabel(student_information_frame, justify="left",
+                                        text="Name: " + str(member.name) + "\n\nVolunteer Hours: "
+                                        + str(member.volunteerHours) + "\n\nTutoring Hours: " + str(member.tutorHours) +
+                                        "\n\nNotes: " + member.notes)
+    name_label.grid(row=0, column=0, padx=5, pady=5)
+
+    quit_button = customtkinter.CTkButton(main_frame, text="Back to student management page",
+                                          command=lambda passed_member=member:
+                                          manage_student(passed_member))
+    quit_button.grid(row=3, column=0, columnspan=4)
+
+    # This sets a keybind to call the set_member_status function. This passes in the value from the radio button and
+    # the member passed into the function.
+    win.bind(sequence="<Button-1>", func=lambda value=radio_var.get():
+             (lambda passed_member=member: set_member_status(passed_member, value)))
+
+
+def set_member_status(member: student.Student, value): member.status = value
+
 
 
 def edit_student_information():
