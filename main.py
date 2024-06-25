@@ -224,7 +224,8 @@ def manage_student(member):
     name_label = customtkinter.CTkLabel(info_frame, justify="left",
                                         text="Name: " + str(member.name) + "\n\nVolunteer Hours: "
                                         + str(member.volunteerHours) + "\n\nTutoring Hours: " + str(member.tutorHours) +
-                                        "\n\nClub Standing: " + member.getStatusString() + "\n\nNotes: " + member.notes)
+                                        "\n\nClub Standing: " + member.getStatusString() + "\n\nNotes: " + member.notes,
+                                        font=("font1", 13))
     name_label.grid(row=0, column=0, padx=5, pady=5)
     """
     volunteer_hours_label = customtkinter.CTkLabel(info_frame, text="Volunteer Hours: " + str(member.volunteerHours))
@@ -243,7 +244,8 @@ def manage_student(member):
     actions_frame.anchor("n")
 
     edit_student_information_button = customtkinter.CTkButton(actions_frame, text="Edit Student Information",
-                                                              command=edit_student_information)
+                                                              command=lambda passed_member=member:
+                                                              edit_student_information(passed_member))
     edit_student_information_button.grid(row=3, column=0, padx=5, pady=5)
     manage_club_standing_button = customtkinter.CTkButton(actions_frame, text="Manage Club Standing",
                                                           command=lambda passed_member=member:
@@ -267,7 +269,7 @@ def manage_club_standing(member: student.Student):
     title.grid(row=0, column=0, columnspan=4)
 
     radiobutton_frame = customtkinter.CTkFrame(main_frame)
-    radiobutton_frame.grid(row=1, column=1, ipadx=30, padx=50)
+    radiobutton_frame.grid(row=1, column=1, ipadx=30, padx=10)
     radio_button_1 = customtkinter.CTkRadioButton(master=radiobutton_frame, variable=radio_var, value=0,
                                                   text="Poor")
     radio_button_1.grid(row=1, column=2, pady=10, padx=20, sticky="w")
@@ -286,7 +288,7 @@ def manage_club_standing(member: student.Student):
     name_label = customtkinter.CTkLabel(student_information_frame, justify="left",
                                         text="Name: " + str(member.name) + "\n\nVolunteer Hours: "
                                         + str(member.volunteerHours) + "\n\nTutoring Hours: " + str(member.tutorHours) +
-                                        "\n\nNotes: " + member.notes)
+                                        "\n\nNotes: " + member.notes, font=("font1", 13))
     name_label.grid(row=0, column=0, padx=5, pady=5)
 
     quit_button = customtkinter.CTkButton(main_frame, text="Back to student management page",
@@ -294,24 +296,61 @@ def manage_club_standing(member: student.Student):
                                           manage_student(passed_member))
     quit_button.grid(row=3, column=0, columnspan=4)
 
-    # This sets a keybind to call the set_member_status function. This passes in the value from the radio button and
-    # the member passed into the function.
-    win.bind(sequence="<Button-1>", func=lambda value=radio_var.get():
-             (lambda passed_member=member: set_member_status(passed_member, value)))
+    # This sets a keybind to call the set_member_status function. This passes the member which the status needs to be
+    # modified and gives the value to set the member to. I don't know why this works, but it does.
+    win.bind("<Button-1>", lambda passed_member=member: set_member_status(member, radio_var.get()))
 
 
 def set_member_status(member: student.Student, value): member.status = value
 
 
-
-def edit_student_information():
+def edit_student_information(member: student.Student):
     """
     Allows changes to personal information within the system. This can change the displayed email address, name, or
     grade. This does not change information inside of the spreadsheet, rather just what is displayed within the program.
     :return:
     """
+    clear_screen()
+    main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
+    main_frame.pack()
+    title = customtkinter.CTkLabel(main_frame, text="Change Club Standing", font=("font1", 25))
+    title.grid(row=0, column=0, columnspan=4)
+    student_information_frame = customtkinter.CTkFrame(main_frame)
+    student_information_frame.grid(row=1, column=0, ipadx=90, ipady=60)
+    name_label = customtkinter.CTkLabel(student_information_frame, justify="left",
+                                        text="Name: " + str(member.name) + "\n\nVolunteer Hours: "
+                                        + str(member.volunteerHours) + "\n\nTutoring Hours: " + str(member.tutorHours) +
+                                        "\n\nNotes: " + member.notes, font=("font1", 13))
+    name_label.grid(row=0, column=0, padx=5, pady=5)
+
+    entry_fields_frame = customtkinter.CTkFrame(main_frame)
+    entry_fields_frame.grid(row=1, column=1, padx=10, ipadx=10, ipady=10)
+    entry_fields_title = customtkinter.CTkLabel(entry_fields_frame, text="Enter in new information here",
+                                                font=("font1", 20))
+    entry_fields_title.grid(row=0, column=0, columnspan=2)
+    name_change_label = customtkinter.CTkLabel(entry_fields_frame, text="New Name:")
+    name_change_label.grid(row=1, column=0, padx=15)
+    name_change_field = customtkinter.CTkEntry(entry_fields_frame)
+    name_change_field.grid(row=1, column=1, ipadx=150)
+    name_change_field.insert(0, member.name)
+    notes_change_label = customtkinter.CTkLabel(entry_fields_frame, text="Notes:")
+    notes_change_label.grid(row=2, column=0, padx=15)
+    notes_change_field = customtkinter.CTkEntry(entry_fields_frame)
+    notes_change_field.grid(row=2, column=1, ipadx=150, ipady=100)
+    notes_change_field.insert(0, member.notes)
+    submit_button = customtkinter.CTkButton(entry_fields_frame, text="Submit Changes",
+                                            command= lambda passed_member=member:
+                                            set_member_info(member, name_change_field.get(), notes_change_field.get()))
+    submit_button.grid(row=3, column=0, padx=30, pady=10, columnspan=2)
+    quit_button = customtkinter.CTkButton(main_frame, text="Back to student management page",
+                                          command=lambda passed_member=member:
+                                          manage_student(passed_member))
+    quit_button.grid(row=3, column=0, columnspan=4)
 
 
+def set_member_info(member, name, notes):
+    member.name = name
+    member.notes = notes
 
 
 clear_screen()
