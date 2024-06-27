@@ -9,12 +9,14 @@ class Student:
     next_student_id = 0
 
     def __init__(self, name: str, status: int, grade: int, email: str, notes: str = "", volunteerHours=0,
-                 tutorHours=0) -> None:
+                 tutorHours=0, log=None) -> None:
 
         """ Here we declare our varibles. 
         Because we do not want our name, email, grade, or status varibles to be easily changed we use properties to store then such that it is hard to accidentally change them
         We use the student_id varible to help the computer keep track of the students.
         The log list stores all volunteering and tutoring activities a student has done."""
+        if log is None:
+            log = []
         self.name = name
         self.email = email
         self.grade = grade
@@ -23,7 +25,7 @@ class Student:
         self.tutorHours = tutorHours
         self.student_id = Student.next_student_id
         Student.next_student_id = Student.next_student_id + 1
-        self.log = []
+        self.log = log
         self.notes = notes
 
     @property
