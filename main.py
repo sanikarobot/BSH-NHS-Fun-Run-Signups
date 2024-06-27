@@ -24,6 +24,7 @@ volunteer_entries = []
 tutoring_entries = []
 
 
+
 student1 = student.Student(name="Sanika", status=0, grade=11, email="hi")
 student2 = student.Student("Marley", 1, 11, "hi")
 student3 = student.Student("Aaron", 2, 11, "hi")
@@ -251,8 +252,43 @@ def manage_student(member):
                                                           command=lambda passed_member=member:
                                                           manage_club_standing(passed_member))
     manage_club_standing_button.grid(row=4, column=0, padx=5, pady=5)
+    view_volunteering_entries_button = customtkinter.CTkButton(actions_frame, text="View Volunteering Entries",
+                                                        command=lambda passed_member = member:
+                                                        view_volunteering_entries(passed_member))
+    view_volunteering_entries_button.grid(row=5, column=0, padx=5, pady=5)
+
     quit_button = customtkinter.CTkButton(main_frame, text="Return to main menu", command=menu)
     quit_button.grid(row=3, column=1, padx=10, pady=10)
+
+
+def view_volunteering_entries(member: student.Student):
+    clear_screen()
+    win.unbind("<Key>")
+    win.geometry("600x340")
+    main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
+    main_frame.pack()
+    title = customtkinter.CTkLabel(main_frame, text="Volunteering Entries for " + member.name, font=("font1", 25))
+    title.grid(row=0, column=0, columnspan=4)
+    info_frame = customtkinter.CTkScrollableFrame(main_frame, label_text="Volunteering Entries")
+    info_frame.grid(row=1, column=0, ipadx=8, ipady=100, padx=10, columnspan=10)
+    for index, volunteer_entry in enumerate(member.log):
+        volunteer_entry_frame = customtkinter.CTkFrame(info_frame)
+        volunteer_entry_frame.grid(row=index, column=0, ipadx=300)
+        volunteer_entry_title = customtkinter.CTkLabel(volunteer_entry_frame, text=volunteer_entry.title,
+                                                       font=("font1", "20"))
+        volunteer_entry_title.grid(row=0, column=0, columnspan=2)
+        button = customtkinter.CTkButton(volunteer_entry_frame, text="View Information",
+                                         command=lambda passed_volunteer_entry=volunteer_entry:
+                                         view_volunteer_entry(passed_volunteer_entry))
+        button.grid(row=1, column=1, padx=30, pady=1)
+        buttons[volunteer_entry] = button
+    quit_button = customtkinter.CTkButton(main_frame, text="Return to Student Information")
+    quit_button.grid(row=3, column=0, columnspan=5)
+
+
+def view_volunteer_entry(volunteer_entry):
+    pass
+
 
 
 def manage_club_standing(member: student.Student):
