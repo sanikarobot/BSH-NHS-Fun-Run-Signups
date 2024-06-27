@@ -9,6 +9,7 @@ class Volunteer():
         self.date = date
         self._dateInts = []
         self.analyzeDate()
+        print(self._dateInts)
         self.month = self._dateInts[0]
         self.day = self._dateInts[1]
         self.year = self._dateInts[2]
@@ -119,6 +120,8 @@ class Volunteer():
             self._dateInts = self.date.split("/")
         elif "-" in self.date:
             self._dateInts = self.date.split('-')
+        for index, value in enumerate(self._dateInts):
+            self._dateInts[index] = int(value)
         return self._dateInts
     
     def getMonth(self)-> str:
