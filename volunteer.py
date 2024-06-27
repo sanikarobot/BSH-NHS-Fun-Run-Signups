@@ -51,6 +51,14 @@ class Volunteer():
     @location.setter
     def location(self, location)-> None:
         self._location = location
+
+    @property
+    def notes(self)-> str:
+        return self._notes
+    
+    @notes.setter
+    def notes(self, notes)-> None:
+        self._notes = notes
         
     # We should also add in a notes section as 
     
