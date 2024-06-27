@@ -1,8 +1,8 @@
 from threading import Thread
 
 class Volunteer():
-    def __init__(self, name: str, email: str, date: str, time: float, location: str, notes: str) -> None:
-        self.name = name
+    def __init__(self, title: str, email: str, date: str, time: float, location: str, notes: str) -> None:
+        self.title = title
         self.email = email
         self.date = date
         self.time = time
@@ -13,12 +13,12 @@ class Volunteer():
         self.dateInts = []
 
     @property
-    def name(self)-> str:
-        return self._name
+    def title(self)-> str:
+        return self._title
     
-    @name.setter
-    def name(self, name)-> None:
-        self._name = name
+    @title.setter
+    def title(self, title)-> None:
+        self._title = title
 
     @property
     def email(self)-> str:
