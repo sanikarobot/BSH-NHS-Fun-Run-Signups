@@ -416,6 +416,36 @@ def set_member_info(member, name, notes):
     member.notes = notes
 
 
+def wrap_text(text: str, character_count: int):
+    """
+    This function calls itself recursively in order to insert \n characters into text in order to allow for text to be
+    wrapped according to
+    :param text:
+    :param character_count:
+    :return:
+    """
+    if len(text) <= character_count:
+        return text
+    else:
+        passes = 0
+        return_value_location = 0
+        while True:
+            if text[character_count-passes] != " ":
+                passes = passes + 1
+            else:
+                # I hate python strings sometimes
+                text = text[character_count-passes] + "\n" + text[character_count-passes+1]
+                return_value_location = character_count-passes
+                break
+        return_text = text[0:return_value_location] + wrap_text(text[return_value_location+1:], character_count)
+        return return_text
+
+
+
+
+print(wrap_text("this is a quick test to see if the text wrapping function works", 10))
+
+
 clear_screen()
 menu()
 win.mainloop()
