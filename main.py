@@ -25,7 +25,7 @@ tutoring_entries = []
 
 volunteering_entry1 =  volunteer.Volunteer("the greatest event of all time and places",
                                            "email1", "01-01-2001", 5, "location1")
-volunteering_entry2 =  volunteer.Volunteer("vol2", "email2", "02-02-2002", 5, "location2")
+volunteering_entry2 =  tutor.Tutor("vol2", "email2", "02-02-2002", 5, "location2")
 volunteering_entry3 =  volunteer.Volunteer("vol3", "email3", "03-03-2003", 5, "location3")
 volunteering_entry4 =  volunteer.Volunteer("vol4", "email4", "04-04-4004", 5, "location4")
 test_entries = [volunteering_entry4, volunteering_entry3, volunteering_entry2, volunteering_entry1]
@@ -277,7 +277,6 @@ def view_volunteering_entries(member: student.Student):
     title.grid(row=0, column=0, columnspan=100)
     info_frame = customtkinter.CTkScrollableFrame(main_frame, label_text="Volunteering Entries")
     info_frame.grid(row=1, column=0, columnspan=10, ipadx=400)
-    print(member.log)
     for index, volunteer_entry in enumerate(member.log):
         volunteer_entry_frame = customtkinter.CTkFrame(info_frame, fg_color="#1a1a1a")
         volunteer_entry_frame.grid(row=index, column=0, ipadx=200, pady=5, columnspan=5, sticky="nw")
@@ -286,7 +285,7 @@ def view_volunteering_entries(member: student.Student):
         volunteer_entry_title.grid(row=0, column=0, columnspan=2, pady=5, padx=10, sticky="nw")
         button = customtkinter.CTkButton(volunteer_entry_frame, text="View Information",
                                          command=lambda passed_volunteer_entry=volunteer_entry:
-                                         view_volunteer_entry(passed_volunteer_entry))
+                                         view_volunteer_entry(passed_volunteer_entry, member))
         button.grid(row=1, column=0, padx=10, pady=5, columnspan=4, sticky="nw")
         buttons[volunteer_entry] = button
     quit_button = customtkinter.CTkButton(main_frame, text="Return to Student Information",
@@ -294,8 +293,28 @@ def view_volunteering_entries(member: student.Student):
     quit_button.grid(row=3, column=0, columnspan=100)
 
 
-def view_volunteer_entry(volunteer_entry):
-    pass
+def view_volunteer_entry(volunteer_entry: volunteer.Volunteer, member: student.Student):
+    clear_screen()
+    win.unbind("<Key>")
+    win.geometry("600x340")
+    main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
+    main_frame.pack()
+    title = customtkinter.CTkLabel(main_frame, text="Volunteer Entry for " + member.name, font=("font1", 25))
+    title.grid(row=0, column=0, columnspan=4)
+    if volunteer_entry is tutor.Tutor:
+        title.configure(text="Tutoring Entry for " + member.name)
+    info_frame = customtkinter.CTkScrollableFrame(main_frame, label_text="Member Information")
+    info_frame.grid(row=1, column=0, ipadx=8, ipady=8, padx=10, rowspan=10)
+    name_label = customtkinter.CTkLabel(info_frame, justify="left",
+                                        text="Title: " + str(volunteer_entry.title) + "\n\nDate: "
+                                        + str(volunteer_entry.date) + "\n\nHours: " + str(volunteer_entry.time) +
+                                        "\n\nLocation: " + volunteer_entry.location + "\n\nNotes: " +
+                                        volunteer_entry.notes,
+                                        font=("font1", 13))
+    name_label.grid(row=0, column=0, padx=5, pady=5)
+    quit_button = customtkinter.CTkButton(main_frame, text="Return to volunteer entries",
+                                          command=lambda: view_volunteering_entries(member))
+    quit_button.grid(row=1, column=1, padx=10, pady=10)
 
 
 

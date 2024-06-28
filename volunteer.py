@@ -14,6 +14,7 @@ class Volunteer():
         self.year = self._dateInts[2]
         self.time = time
         self.location = location
+        self.notes = notes
 
 
     @property
