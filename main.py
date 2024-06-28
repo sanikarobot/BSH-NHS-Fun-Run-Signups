@@ -231,8 +231,8 @@ def manage_student(member):
     name_label = customtkinter.CTkLabel(info_frame, justify="left",
                                         text="Name: " + str(member.name) + "\n\nVolunteer Hours: "
                                         + str(member.volunteerHours) + "\n\nTutoring Hours: " + str(member.tutorHours) +
-                                        "\n\nClub Standing: " + member.getStatusString() + "\n\nNotes: " + member.notes,
-                                        font=("font1", 13))
+                                        "\n\nClub Standing: " + member.getStatusString() + "\n\n" +
+                                        wrap_text("Notes: " + member.notes, 35), font=("font1", 13))
     name_label.grid(row=0, column=0, padx=5, pady=5)
     """
     volunteer_hours_label = customtkinter.CTkLabel(info_frame, text="Volunteer Hours: " + str(member.volunteerHours))
@@ -351,7 +351,8 @@ def manage_club_standing(member: student.Student):
     name_label = customtkinter.CTkLabel(student_information_frame, justify="left",
                                         text="Name: " + str(member.name) + "\n\nVolunteer Hours: "
                                         + str(member.volunteerHours) + "\n\nTutoring Hours: " + str(member.tutorHours) +
-                                        "\n\nNotes: " + member.notes, font=("font1", 13))
+                                        "\n\n" + wrap_text("Notes: " + member.notes, 35),
+                                        font=("font1", 13))
     name_label.grid(row=0, column=0, padx=5, pady=5)
 
     quit_button = customtkinter.CTkButton(main_frame, text="Back to student management page",
@@ -383,7 +384,7 @@ def edit_student_information(member: student.Student):
     name_label = customtkinter.CTkLabel(student_information_frame, justify="left",
                                         text="Name: " + str(member.name) + "\n\nVolunteer Hours: "
                                         + str(member.volunteerHours) + "\n\nTutoring Hours: " + str(member.tutorHours) +
-                                        "\n\nNotes: " + member.notes, font=("font1", 13))
+                                        "\n\n" + wrap_text("Notes: " + member.notes, 35), font=("font1", 13))
     name_label.grid(row=0, column=0, padx=5, pady=5)
 
     entry_fields_frame = customtkinter.CTkFrame(main_frame)
