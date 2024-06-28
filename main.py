@@ -434,16 +434,16 @@ def wrap_text(text: str, character_count: int):
                 passes = passes + 1
             else:
                 # I hate python strings sometimes
-                text = text[character_count-passes] + "\n" + text[character_count-passes+1]
+                text = text[:character_count-passes] + "\n" + text[character_count-passes+1:]
                 return_value_location = character_count-passes
                 break
-        return_text = text[0:return_value_location] + wrap_text(text[return_value_location+1:], character_count)
+        return_text = str(text[:return_value_location]) + str(wrap_text(text[return_value_location:], character_count))
         return return_text
 
 
 
 
-print(wrap_text("this is a quick test to see if the text wrapping function works", 10))
+print(wrap_text("this is a quick test to see if the text wrapping function works", 30))
 
 
 clear_screen()
