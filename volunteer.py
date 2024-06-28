@@ -9,7 +9,6 @@ class Volunteer():
         self.date = date
         self._dateInts = []
         self.analyzeDate()
-        print(self._dateInts)
         self.month = self._dateInts[0]
         self.day = self._dateInts[1]
         self.year = self._dateInts[2]
