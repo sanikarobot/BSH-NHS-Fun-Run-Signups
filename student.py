@@ -8,8 +8,8 @@ class Student:
 
     next_student_id = 0
 
-    def __init__(self, name: str, status: int, grade: int, email: str, notes: str = "", volunteerHours=0,
-                 tutorHours=0, log=None) -> None:
+    def __init__(self, name: str, grade: str, email: str, notes: str = "", volunteerHours=0,
+                 tutorHours=0, status=0, log=None) -> None:
 
         """ Here we declare our varibles. 
         Because we do not want our name, email, grade, or status varibles to be easily changed we use properties to store then such that it is hard to accidentally change them
@@ -45,7 +45,7 @@ class Student:
         self._student_id = student_id
 
     @property
-    def status(self) -> int:
+    def status(self) -> str:
         return self._status
 
     @status.setter

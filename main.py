@@ -7,6 +7,7 @@ import pickle
 import student
 import tutor
 import volunteer
+import csv
 
 # Button dictionary for find_student search. Allows for the program to keep track of what buttons are on the screen.
 buttons = {}
@@ -441,6 +442,41 @@ def wrap_text(text: str, character_count: int):
         return_text = str(text[:return_value_location]) + str(wrap_text(text[return_value_location:], character_count))
         return return_text
 
+def import_file(fileName: str)-> None:
+    '''this whole thing likely will need to be changed based upon how we format the google sheet
+    pretty much what it does is opens the .csv file and puts each row into a dictionary based upon the title at the top of the column
+    then it checks to see if there is a person in the system already that matches the info in the row. if not it creates a new person and adds the entry to the person
+    if there is it adds the entry to the person that it belongs to. the person identification is done using the email'''
+    if not fileName.lower().endswith(".csv"):
+        fileName = fileName + ".csv"
+    try:
+        with open(fileName, newline= '') as csvfile:
+            memberReader = csv.DictReader(csvfile, restval= "notes")
+            checker = FALSE
+            #we're going to need to add in some threads here to manage this monstrosity of for loops
+            for row in memberReader:
+                for memeber in students:
+                    if row["email"] == memeber.email:
+                        addNewActivity(row, memeber)
+                        checker = True
+                        break
+                if checker == FALSE:
+                    newMember = student.Student(row["name"], row["grade"], row["email"])
+                    addNewActivity(row, newMember)
+
+    except FileNotFoundError:
+        print("unable to find file.") #this should change to something that will actually work with the GUI
+         
+def addNewActivity(activity: dict, student: student.Student)-> None:
+    if activity["tutor"] == "yes":
+        newTutor = tutor.Tutor(activity["title"], activity["email"], activity["date"], float(activity["time"]), activity["location"], activity["notes"])
+        student.log.append(newTutor)
+    elif activity["tutor"] == "no":
+        newVolunteer = volunteer.Volunteer(activity["title"], activity["email"], activity["date"], float(activity["time"]), activity["location"], activity["notes"])
+        student.log.append(newVolunteer)
+    else:
+        raise Exception ("error proccessing expeirence type, unable to tell if it is a volunteer or tutoring experience.")
+    
 
 
 
