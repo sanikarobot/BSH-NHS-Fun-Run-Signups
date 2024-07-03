@@ -45,7 +45,7 @@ class Student:
         self._student_id = student_id
 
     @property
-    def status(self) -> str:
+    def status(self) -> int:
         return self._status
 
     @status.setter
