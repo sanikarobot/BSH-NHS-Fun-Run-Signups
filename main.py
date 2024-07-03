@@ -18,6 +18,9 @@ customtkinter.set_appearance_mode("Dark")
 win.title("National Honor Society Management Portal")
 entry = customtkinter.CTkEntry(win)
 scrollable_frame = customtkinter.CTkScrollableFrame(win)
+frame = customtkinter.CTkFrame(win)
+
+error_label = customtkinter.CTkLabel(win)
 
 students = []
 entries = []
@@ -26,7 +29,8 @@ tutoring_entries = []
 
 volunteering_entry1 =  volunteer.Volunteer("the greatest event of all time and places",
                                            "email1", "01-01-2001", 5, "location1")
-volunteering_entry2 =  tutor.Tutor("vol2", "email2", "02-02-2002", 5, "location2")
+volunteering_entry2 =  tutor.Tutor("vol2", "email2", "02-02-2002", 5, "location2",
+                                   "Jonathan")
 volunteering_entry3 =  volunteer.Volunteer("vol3", "email3", "03-03-2003", 5, "location3")
 volunteering_entry4 =  volunteer.Volunteer("vol4", "email4", "04-04-4004", 5, "location4")
 test_entries = [volunteering_entry4, volunteering_entry3, volunteering_entry2, volunteering_entry1]
@@ -99,6 +103,8 @@ def import_spreadsheet():
     the passed parameters and then return to main menu.
     :return:
     """
+    global error_label
+    global frame
     # Get the file name from the user
     clear_screen()
     main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
@@ -110,11 +116,11 @@ def import_spreadsheet():
                                             "This \n must be in the same \n folder as the program.")
     help_text.grid(row=1, column=1, padx=8)
     frame = customtkinter.CTkFrame(main_frame, corner_radius=6)
-    frame.grid(row=1, column=0, ipady=30)
+    frame.grid(row=1, column=0, ipady=20)
     field = customtkinter.CTkEntry(frame, placeholder_text="Put the name of the spreadsheet in here.", fg_color="grey",
                                    text_color="#000000", placeholder_text_color="#1f1f1f")
-    field.grid(row=0, column=0, ipadx=120, pady=8, padx=10)
-    submit_button = customtkinter.CTkButton(frame, text="Submit File Name")
+    field.grid(row=0, column=0, ipadx=120, pady=8, padx=10, sticky="nw")
+    submit_button = customtkinter.CTkButton(frame, text="Submit File Name", command=lambda: import_file(field.get()))
     submit_button.grid(row=0, column=1, padx=10)
     exit_button = customtkinter.CTkButton(main_frame, text="Quit to main menu", command=menu)
     exit_button.grid(row=3, column=0, columnspan=2)
@@ -443,10 +449,11 @@ def wrap_text(text: str, character_count: int):
         return return_text
 
 def import_file(fileName: str)-> None:
-    '''this whole thing likely will need to be changed based upon how we format the google sheet
-    pretty much what it does is opens the .csv file and puts each row into a dictionary based upon the title at the top of the column
-    then it checks to see if there is a person in the system already that matches the info in the row. if not it creates a new person and adds the entry to the person
-    if there is it adds the entry to the person that it belongs to. the person identification is done using the email'''
+    '''this whole thing likely will need to be changed based upon how we format the google sheet pretty much what it
+    does is opens the .csv file and puts each row into a dictionary based upon the title at the top of the column
+    then it checks to see if there is a person in the system already that matches the info in the row. if not it
+    creates a new person and adds the entry to the person if there is it adds the entry to the person that it belongs
+    to. the person identification is done using the email'''
     if not fileName.lower().endswith(".csv"):
         fileName = fileName + ".csv"
     try:
@@ -455,9 +462,9 @@ def import_file(fileName: str)-> None:
             checker = FALSE
             #we're going to need to add in some threads here to manage this monstrosity of for loops
             for row in memberReader:
-                for memeber in students:
-                    if row["email"] == memeber.email:
-                        addNewActivity(row, memeber)
+                for member in students:
+                    if row["email"] == member.email:
+                        addNewActivity(row, member)
                         checker = True
                         break
                 if checker == FALSE:
@@ -466,8 +473,19 @@ def import_file(fileName: str)-> None:
 
     except FileNotFoundError:
         print("unable to find file.") #this should change to something that will actually work with the GUI
-         
+        error_label = customtkinter.CTkLabel(frame, text="Unable to find file")
+        error_label.grid(row=1, column=0, columnspan=2, padx=12, pady=8, sticky="nw")
+        frame.grid(ipady=0)
+
 def addNewActivity(activity: dict, student: student.Student)-> None:
+    """
+    The implementation of this function is dependent on how we will be importing from Google Forms. This is likely
+    better implemented as a function inside of the student class, but it's possible that it may be better to include a
+    separate function outside of the student class.
+    :param activity:
+    :param student:
+    :return:
+    """
     if activity["tutor"] == "yes":
         newTutor = tutor.Tutor(activity["title"], activity["email"], activity["date"], float(activity["time"]), activity["location"], activity["notes"])
         student.log.append(newTutor)
@@ -480,7 +498,7 @@ def addNewActivity(activity: dict, student: student.Student)-> None:
 
 
 
-print(wrap_text("this is a quick test to see if the text wrapping function works", 30))
+print(wrap_text("this is a quick test to see if the text wrapping function works", 10))
 
 
 clear_screen()
