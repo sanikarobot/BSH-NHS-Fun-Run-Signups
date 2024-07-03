@@ -8,7 +8,7 @@ class Student:
 
     next_student_id = 0
 
-    def __init__(self, name: str, grade: str, email: str, notes: str = "", volunteerHours=0,
+    def __init__(self, name: str, grade: int, email: str, notes: str = "", volunteerHours=0,
                  tutorHours=0, status=0, log=None) -> None:
 
         """ Here we declare our varibles. 
