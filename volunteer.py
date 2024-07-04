@@ -2,9 +2,8 @@ from threading import Thread
 import customException
 
 class Volunteer():
-    def __init__(self, title: str, email: str, date: str, time: float, location: str, notes: str = "") -> None:
+    def __init__(self, email: str, date: str, time: float, location: str, notes: str = "") -> None:
         # Copypaste: volunteer.Volunteer(title, email, date, time, location)
-        self.title = title
         self.email = email
         self.date = date
         self._dateInts = []
@@ -17,13 +16,13 @@ class Volunteer():
         self.notes = notes
 
 
-    @property
+    '''@property
     def title(self)-> str:
         return self._title
     
     @title.setter
     def title(self, title)-> None:
-        self._title = title
+        self._title = title'''
 
     @property
     def email(self)-> str:
@@ -123,36 +122,6 @@ class Volunteer():
         for index, value in enumerate(self._dateInts):
             self._dateInts[index] = int(value)
         return self._dateInts
-    
-    def getMonth(self)-> str:
-        numMonth = self._dateInts[0]
-        self.month = self._dateInts[0]
-        if numMonth == 1:
-            return "January"
-        elif numMonth == 2:
-            return "February"
-        elif numMonth == 3:
-            return "March"
-        elif numMonth == 4:
-            return "April"
-        elif numMonth == 5:
-            return "May"
-        elif numMonth == 6:
-            return "June"
-        elif numMonth == 7:
-            return "July"
-        elif numMonth == 8:
-            return "August"
-        elif numMonth == 9:
-            return "September"
-        elif numMonth == 10:
-            return "October"
-        elif numMonth == 11:
-            return "November"
-        elif numMonth == 12:
-            return "December"
-        else:
-            raise customException.CustomException("Value provided for month out of bounds (1-12 required)")
     
     def getDay(self)-> str:
         self.day = self._dateInts[1]

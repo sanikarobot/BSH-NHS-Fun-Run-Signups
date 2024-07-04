@@ -27,19 +27,19 @@ entries = []
 volunteer_entries = []
 tutoring_entries = []
 
-volunteering_entry1 =  volunteer.Volunteer("the greatest event of all time and places",
-                                           "email1", "01-01-2001", 5, "location1")
-volunteering_entry2 =  tutor.Tutor("vol2", "email2", "02-02-2002", 5, "location2",
+'''volunteering_entry1 =  volunteer.Volunteer("the greatest event of all time and places",
+                                           "email1", "01/01/2001", 5, "location1")
+volunteering_entry2 =  tutor.Tutor("vol2", "email2", "02/02/2002", 5, "location2",
                                    "Jonathan")
-volunteering_entry3 =  volunteer.Volunteer("vol3", "email3", "03-03-2003", 5, "location3")
-volunteering_entry4 =  volunteer.Volunteer("vol4", "email4", "04-04-4004", 5, "location4")
-test_entries = [volunteering_entry4, volunteering_entry3, volunteering_entry2, volunteering_entry1]
+volunteering_entry3 =  volunteer.Volunteer("vol3", "email3", "03/03/2003", 5, "location3")
+volunteering_entry4 =  volunteer.Volunteer("vol4", "email4", "04/04/4004", 5, "location4")
+test_entries = [volunteering_entry4, volunteering_entry3, volunteering_entry2, volunteering_entry1]'''
 
-student1 = student.Student(name="Sanika", status=0, grade=11, email="hi", log=test_entries)
+#student1 = student.Student(name="Sanika", status=0, grade=11, email="hi", log=test_entries)
 student2 = student.Student("Marley", 1, 11, "hi")
 student3 = student.Student("Aaron", 2, 11, "hi")
 student4 = student.Student("Samantha", 3, 12, "hi")
-students.append(student1)
+#students.append(student1)
 students.append(student2)
 students.append(student3)
 students.append(student4)
@@ -463,13 +463,17 @@ def import_file(fileName: str)-> None:
             #we're going to need to add in some threads here to manage this monstrosity of for loops
             for row in memberReader:
                 for member in students:
-                    if row["email"] == member.email:
+                    if row['email'] == member.email:
                         addNewActivity(row, member)
                         checker = True
                         break
                 if checker == FALSE:
                     newMember = student.Student(row["name"], row["grade"], row["email"])
+                    students.append(newMember)
                     addNewActivity(row, newMember)
+        error_label = customtkinter.CTkLabel(frame, text="Successfully imported files")
+        error_label.grid(row=1, column=0, columnspan=2, padx=12, pady=8, sticky="nw")
+        frame.grid(ipady=0)
 
     except FileNotFoundError:
         print("unable to find file.") #this should change to something that will actually work with the GUI
@@ -486,11 +490,11 @@ def addNewActivity(activity: dict, student: student.Student)-> None:
     :param student:
     :return:
     """
-    if activity["tutor"] == "yes":
-        newTutor = tutor.Tutor(activity["title"], activity["email"], activity["date"], float(activity["time"]), activity["location"], activity["notes"])
+    if activity["type"] == "tutor":
+        newTutor = tutor.Tutor(activity["email"], activity["date"], float(activity["time"]), activity["location"], activity["notes"], activity["tutee"])
         student.log.append(newTutor)
-    elif activity["tutor"] == "no":
-        newVolunteer = volunteer.Volunteer(activity["title"], activity["email"], activity["date"], float(activity["time"]), activity["location"], activity["notes"])
+    elif activity["type"] == "volunteer":
+        newVolunteer = volunteer.Volunteer(activity["email"], activity["date"], float(activity["time"]), activity["location"], activity["notes"])
         student.log.append(newVolunteer)
     else:
         raise Exception ("error proccessing expeirence type, unable to tell if it is a volunteer or tutoring experience.")
