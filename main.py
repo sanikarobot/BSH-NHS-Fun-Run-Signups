@@ -459,15 +459,16 @@ def import_file(fileName: str)-> None:
     try:
         with open(fileName, newline= '') as csvfile:
             memberReader = csv.DictReader(csvfile, restval= "notes")
-            checker = FALSE
+            checker = False
             #we're going to need to add in some threads here to manage this monstrosity of for loops
             for row in memberReader:
+                checker = False
                 for member in students:
                     if row['email'] == member.email:
                         addNewActivity(row, member)
                         checker = True
                         break
-                if checker == FALSE:
+                if checker == False:
                     newMember = student.Student(row["name"], row["grade"], row["email"])
                     students.append(newMember)
                     addNewActivity(row, newMember)
