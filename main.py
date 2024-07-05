@@ -467,10 +467,10 @@ def import_file(fileName: str)-> None:
                         addNewActivity(row, member)
                         checker = True
                         break
-                if checker == FALSE:
-                    newMember = student.Student(row["name"], row["grade"], row["email"])
-                    students.append(newMember)
-                    addNewActivity(row, newMember)
+                    if checker == FALSE:
+                        newMember = student.Student(row["name"], row["grade"], row["email"])
+                        students.append(newMember)
+                        addNewActivity(row, newMember)
         error_label = customtkinter.CTkLabel(frame, text="Successfully imported files")
         error_label.grid(row=1, column=0, columnspan=2, padx=12, pady=8, sticky="nw")
         frame.grid(ipady=0)
