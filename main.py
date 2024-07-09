@@ -495,9 +495,13 @@ def addNewActivity(activity: dict, student: student.Student)-> None:
     if activity["type"] == "tutor":
         newTutor = tutor.Tutor(activity["email"], activity["date"], float(activity["time"]), activity["location"], activity["notes"], activity["tutee"])
         student.log.append(newTutor)
+        student.tutorHours = student.getTotalTutorHours()
+        student.allHours = student.getTotalHours()
     elif activity["type"] == "volunteer":
         newVolunteer = volunteer.Volunteer(activity["email"], activity["date"], float(activity["time"]), activity["location"], activity["notes"])
         student.log.append(newVolunteer)
+        student.volunteerHours = student.getTotalVolunteerHours()
+        student.allHours = student.getTotalHours()
     else:
         raise Exception ("error proccessing expeirence type, unable to tell if it is a volunteer or tutoring experience.")
     

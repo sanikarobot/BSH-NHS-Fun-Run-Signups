@@ -27,6 +27,9 @@ class Student:
         Student.next_student_id = Student.next_student_id + 1
         self.log = log
         self.notes = notes
+        self.volunteerHours = self.getTotalVolunteerHours()
+        self.tutorHours = self.getTotalTutorHours()
+        self.allHours = self.getTotalHours()
 
     @property
     def name(self) -> str:
@@ -92,6 +95,7 @@ class Student:
         self.volunteerHours = 0
         for i in self.log:
             if type(i) != Tutor and type(i) == Volunteer:
+                print(type(i), i.location)
                 self.volunteerHours = self.volunteerHours + i.time
         return self.volunteerHours
 
@@ -101,6 +105,7 @@ class Student:
         self.tutorHours = 0
         for i in self.log:
             if type(i) == Tutor:
+                print(type(i), i.tutee)
                 self.tutorHours = self.tutorHours + i.time
         return self.tutorHours
 
