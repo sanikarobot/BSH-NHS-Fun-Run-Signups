@@ -132,4 +132,10 @@ class Student:
             return "On Track for Cords"
         else:
             raise customException.CustomException("Status integer too large")
+    
+    def clear (self):
+        self.log.clear
+        self.volunteerHours = 0
+        self.tutorHours = 0
+        self.allHours = 0
         

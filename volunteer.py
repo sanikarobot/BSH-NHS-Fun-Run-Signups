@@ -14,6 +14,7 @@ class Volunteer():
         self.time = time
         self.location = location
         self.notes = notes
+        self.title = ("Volunteering at " + self.location)
 
 
     '''@property

@@ -509,7 +509,8 @@ def import_file(fileName: str)-> None:
     then it checks to see if there is a person in the system already that matches the info in the row. if not it
     creates a new person and adds the entry to the person if there is it adds the entry to the person that it belongs
     to. the person identification is done using the email'''
-    raise Exception("Import File does not have a clear function implemented yet.")
+    for kstudent in students:
+        kstudent.clear()
     if not fileName.lower().endswith(".csv"):
         fileName = fileName + ".csv"
     try:
