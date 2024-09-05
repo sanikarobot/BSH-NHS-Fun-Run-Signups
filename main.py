@@ -35,14 +35,14 @@ volunteering_entry3 =  volunteer.Volunteer("vol3", "email3", "03/03/2003", 5, "l
 volunteering_entry4 =  volunteer.Volunteer("vol4", "email4", "04/04/4004", 5, "location4")
 test_entries = [volunteering_entry4, volunteering_entry3, volunteering_entry2, volunteering_entry1]'''
 
-#student1 = student.Student(name="Sanika", status=0, grade=11, email="hi", log=test_entries)
-student2 = student.Student("Marley", 1, 11, "hi")
-student3 = student.Student("Aaron", 2, 11, "hi")
-student4 = student.Student("Samantha", 3, 12, "hi")
-#students.append(student1)
-students.append(student2)
-students.append(student3)
-students.append(student4)
+# #student1 = student.Student(name="Sanika", status=0, grade=11, email="hi", log=test_entries)
+# student2 = student.Student("Marley", 1, 11, "hi")
+# student3 = student.Student("Aaron", 2, 11, "hi")
+# student4 = student.Student("Samantha", 3, 12, "hi")
+# #students.append(student1)
+# students.append(student2)
+# students.append(student3)
+# students.append(student4)
 
 
 

@@ -14,16 +14,16 @@ class Volunteer():
         self.time = time
         self.location = location
         self.notes = notes
-        self.title = ("Volunteering at " + self.location)
+        self.title = "Volunteering at " + self.location
 
 
-    '''@property
+    @property
     def title(self)-> str:
         return self._title
-    
+
     @title.setter
     def title(self, title)-> None:
-        self._title = title'''
+        self._title = title
 
     @property
     def email(self)-> str:
