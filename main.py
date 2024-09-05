@@ -53,6 +53,48 @@ def clear_screen():
     for child in win.winfo_children():
         child.destroy()
 
+def save_file():
+    """
+    Saves information to NHSInformationSaveFile.txt using pickle. Any errors with saving the file will be printed
+    to the console.
+    """
+    # Specify file name
+    file_name = "NHSInformationSaveFile.txt"
+    # Print message to console
+    print("Saving...")
+    # Try saving to file
+    try:
+        with open(file_name, "wb") as out_file:
+            pickle.dump((students, volunteer_entries, entries, tutoring_entries), out_file)
+        print("Success!")
+    # Print any errors into console and let the user know what the error was
+    except Exception as e:
+        # main_menu("There was an error saving to the file.")
+        print("Something went wrong when saving to the file. Error: " + str(e))
+
+def load_file():
+    """
+    Loads in information from a file using the pickle module. If there are any errors, paste them to the console.
+    File name: NHSInformationSaveFile.txt
+    """
+    # Get lists to load to
+    global students, volunteer_entries, entries, tutoring_entries
+    # Specify file name
+    file_name = "NHSInformationSaveFile.txt"
+    # Try to load in file
+    try:
+        # Go to file
+        with open(file_name, "rb") as input_file:
+            # Load into regions, employees, and devices from the file
+            students, volunteer_entries, entries, tutoring_entries = pickle.load(input_file)
+        # Return true
+        return True
+    # Otherwise, print to console the error and return false.
+    # Errors would likely be the file not existing.
+    except Exception as e:
+        print("Something went wrong when loading from the file. Error: " + str(e))
+        return False
+
 
 def menu():
     """
@@ -64,6 +106,7 @@ def menu():
     global buttons
     buttons = {}
     clear_screen()
+    save_file()
     win.geometry("420x270")
     title_font = ("font1", 25)
     title = customtkinter.CTkLabel(win, text="Main Menu", font=title_font)
@@ -275,6 +318,11 @@ def manage_student(member):
 
 
 def view_volunteering_entries(member: student.Student):
+    """
+    Displays all volunteering entries of a student.
+    :param member:
+    :return:
+    """
     clear_screen()
     win.unbind("<Key>")
     win.geometry("600x340")
@@ -301,6 +349,13 @@ def view_volunteering_entries(member: student.Student):
 
 
 def view_volunteer_entry(volunteer_entry: volunteer.Volunteer, member: student.Student):
+    """
+    Shows information about a volunteering entry. If the object passed is a tutoring object, it will be named as such
+    in this function.
+    :param volunteer_entry:
+    :param member:
+    :return:
+    """
     clear_screen()
     win.unbind("<Key>")
     win.geometry("600x340")
@@ -454,13 +509,13 @@ def import_file(fileName: str)-> None:
     then it checks to see if there is a person in the system already that matches the info in the row. if not it
     creates a new person and adds the entry to the person if there is it adds the entry to the person that it belongs
     to. the person identification is done using the email'''
+    raise Exception("Import File does not have a clear function implemented yet.")
     if not fileName.lower().endswith(".csv"):
         fileName = fileName + ".csv"
     try:
         with open(fileName, newline= '') as csvfile:
             memberReader = csv.DictReader(csvfile, restval= "notes")
             checker = False
-            #we're going to need to add in some threads here to manage this monstrosity of for loops
             for row in memberReader:
                 checker = False
                 for member in students:
@@ -512,5 +567,6 @@ print(wrap_text("this is a quick test to see if the text wrapping function works
 
 
 clear_screen()
+load_file()
 menu()
 win.mainloop()
