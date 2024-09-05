@@ -2,7 +2,7 @@ from threading import Thread
 import customException
 
 class Volunteer():
-    def __init__(self, email: str, date: str, time: float, location: str, notes: str = "") -> None:
+    def __init__(self, email: str, date: str, time: float, location: str, title: str, notes: str = "") -> None:
         # Copypaste: volunteer.Volunteer(title, email, date, time, location)
         self.email = email
         self.date = date
@@ -14,7 +14,7 @@ class Volunteer():
         self.time = time
         self.location = location
         self.notes = notes
-        self.title = "Volunteering at " + self.location
+        self.title = title
 
 
     @property
