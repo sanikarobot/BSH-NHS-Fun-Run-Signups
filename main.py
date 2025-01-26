@@ -439,6 +439,7 @@ def edit_student_information(member: student.Student):
     clear_screen()
     main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
     main_frame.pack()
+    win.geometry("800x400")
     title = customtkinter.CTkLabel(main_frame, text="Change Club Standing", font=("font1", 25))
     title.grid(row=0, column=0, columnspan=4)
     student_information_frame = customtkinter.CTkFrame(main_frame)
