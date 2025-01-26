@@ -9,7 +9,7 @@ class Student:
     next_student_id = 0
 
     def __init__(self, name: str, grade: int, email: str, notes: str = "", volunteerHours=0,
-                 tutorHours=0, status=0, log=None) -> None:
+                 tutorHours=0, status=0, attendence=0, log=None) -> None:
 
         """ Here we declare our varibles. 
         Because we do not want our name, email, grade, or status varibles to be easily changed we use properties to store then such that it is hard to accidentally change them
@@ -23,6 +23,7 @@ class Student:
         self.status = status
         self.volunteerHours = volunteerHours
         self.tutorHours = tutorHours
+        self.attedance = attendence
         self.student_id = Student.next_student_id
         Student.next_student_id = Student.next_student_id + 1
         self.log = log
@@ -79,6 +80,19 @@ class Student:
     @email.setter
     def email(self, email) -> None:
         self._email = email
+
+    @property
+    def attendance(self) -> int:
+        return self._attendance
+    
+    @attendance.setter
+    def attendance(self, attendance)-> None:
+        if not isinstance(int, attendance) == int:
+            raise customException ("Attendance must be an integer")
+        elif attendance < 0:
+            raise customException("Attendance must be a positive number")
+        else:
+            self._attendance = attendance
 
     @property
     def notes(self):
@@ -138,4 +152,10 @@ class Student:
         self.volunteerHours = 0
         self.tutorHours = 0
         self.allHours = 0
+       
+    def clearAttendance(self):
+        self.attendance = 0
+
+    def incrementAttendance(self):
+        self.attendance += 1
         

@@ -474,7 +474,7 @@ def edit_student_information(member: student.Student):
     quit_button.grid(row=3, column=0, columnspan=4)
 
 
-def set_member_info(member, name, notes):
+def set_member_info(member: student.Student, name, notes):
     member.name = name
     member.notes = notes
 
@@ -521,6 +521,7 @@ def import_file(fileName: str)-> None:
                 checker = False
                 for member in students:
                     if row['email'] == member.email:
+                        member.name = member.name
                         addNewActivity(row, member)
                         checker = True
                         break
@@ -563,6 +564,35 @@ def addNewActivity(activity: dict, student: student.Student)-> None:
     else:
         raise Exception ("error proccessing expeirence type, unable to tell if it is a volunteer or tutoring experience.")
     
+def addAttendance(member: student.Student):
+    member.incrementAttendance()
+
+def importAttendanceFile(fileName: str):
+    for kstudent in students:
+        kstudent.clearAttendance()
+    if not fileName.lower().endswith(".csv"):
+        fileName = fileName + ".csv"
+    try:
+         with open(fileName, newline= '') as csvfile:
+            memberReader = csv.DictReader(csvfile, restval= "notes")
+            checker = False
+            for row in memberReader:
+                checker = False
+                for member in students:
+                    if row['email'] == member.email:
+                        member.name = member.name
+                        addAttendance(member)
+                        checker = True
+                        break
+                if checker == False:
+                    newMember = student.Student(row["name"], row["grade"], row["email"])
+                    students.append(newMember)
+                    addAttendance(member)
+    except FileNotFoundError:
+        print("unable to find file.") #this should change to something that will actually work with the GUI
+        error_label = customtkinter.CTkLabel(frame, text="Unable to find file")
+        error_label.grid(row=1, column=0, columnspan=2, padx=12, pady=8, sticky="nw")
+        frame.grid(ipady=0)
 
 
 
