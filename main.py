@@ -522,7 +522,6 @@ def import_file(fileName: str)-> None:
                 checker = False
                 for member in students:
                     if row['email'] == member.email:
-                        member.name = member.name
                         addNewActivity(row, member)
                         checker = True
                         break
@@ -581,7 +580,6 @@ def importAttendanceFile(fileName: str):
                 checker = False
                 for member in students:
                     if row['email'] == member.email:
-                        member.name = member.name
                         addAttendance(member)
                         checker = True
                         break

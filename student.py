@@ -37,8 +37,8 @@ class Student:
         return self._name
 
     @name.setter
-    def name(self, name) -> None:
-        self._name = name
+    def name(self, name: str) -> None:
+        self._name = (name[0] + ". " + name[-3:])
 
     @property
     def student_id(self) -> str:
