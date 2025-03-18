@@ -8,6 +8,7 @@ import student
 import tutor
 import volunteer
 import csv
+import customException
 
 # Button dictionary for find_student search. Allows for the program to keep track of what buttons are on the screen.
 buttons = {}
@@ -34,15 +35,15 @@ volunteering_entry2 =  tutor.Tutor("vol2", "email2", "02/02/2002", 5, "location2
 volunteering_entry3 =  volunteer.Volunteer("vol3", "email3", "03/03/2003", 5, "location3")
 volunteering_entry4 =  volunteer.Volunteer("vol4", "email4", "04/04/4004", 5, "location4")
 test_entries = [volunteering_entry4, volunteering_entry3, volunteering_entry2, volunteering_entry1]'''
-
-#student1 = student.Student(name="Sanika", status=0, grade=11, email="hi", log=test_entries)
-student2 = student.Student("Marley", 1, 11, "hi")
-student3 = student.Student("Aaron", 2, 11, "hi")
-student4 = student.Student("Samantha", 3, 12, "hi")
-#students.append(student1)
-students.append(student2)
-students.append(student3)
-students.append(student4)
+#
+# #student1 = student.Student(name="Sanika", status=0, grade=11, email="hi", log=test_entries)
+# student2 = student.Student("Marley", 1, 11, "hi")
+# student3 = student.Student("Aaron", 2, 11, "hi")
+# student4 = student.Student("Samantha", 3, 12, "hi")
+# #students.append(student1)
+# students.append(student2)
+# students.append(student3)
+# students.append(student4)
 
 
 
@@ -118,12 +119,14 @@ def menu():
     option_label.grid(row=0, column=0, padx=50, pady=3)
     find_student_button = customtkinter.CTkButton(main_frame, text="Find Student", command=find_student)
     find_student_button.grid(row=1, column=0, padx=50, pady=3)
-    import_button = customtkinter.CTkButton(main_frame, text="Import Spreadsheet", command=import_spreadsheet)
+    import_button = customtkinter.CTkButton(main_frame, text="Import Volunteering Hours", command=lambda: import_spreadsheet(attendance=False))
     import_button.grid(row=2, column=0, padx=50, pady=3)
     export_button = customtkinter.CTkButton(main_frame, text="Export Information", command=export_information)
     export_button.grid(row=3, column=0, padx=50, pady=3)
+    import_attendance_button = customtkinter.CTkButton(main_frame, text="Import Attendance", command=import_spreadsheet)
+    import_attendance_button.grid(row=4, column=0, padx=50, pady=3)
     help_button = customtkinter.CTkButton(main_frame, text="Help", command=help_page)
-    help_button.grid(row=4, column=0, padx=50, pady=3)
+    help_button.grid(row=40, column=0, padx=50, pady=3)
 
     guide = customtkinter.CTkLabel(win, text="Select an option \n from the left!", width=20, anchor="n",
                                    font=("font1", 20))
@@ -140,7 +143,7 @@ def help_page():
     menu_button.pack()
 
 
-def import_spreadsheet():
+def import_spreadsheet(attendance=True):
     """
     Reads in a .csv file into the program. This needs to be able to create new volunteering/tutoring logs depending on
     the passed parameters and then return to main menu.
@@ -152,7 +155,10 @@ def import_spreadsheet():
     clear_screen()
     main_frame = customtkinter.CTkFrame(win, fg_color="transparent")
     main_frame.pack()
-    title = customtkinter.CTkLabel(main_frame, text="Import Spreadsheet", font=("font1", 25))
+    if attendance:
+        title = customtkinter.CTkLabel(main_frame, text="Import Attendance Spreadsheet", font=("font1", 25))
+    else:
+        title = customtkinter.CTkLabel(main_frame, text="Import Volunteering Hours Spreadsheet", font=("font1", 25))
     title.grid(row=0, column=0, columnspan=2)
     help_text = customtkinter.CTkLabel(main_frame,
                                        text="Put in the name of the \n spreadsheet you want \n to import from. "
@@ -504,41 +510,71 @@ def wrap_text(text: str, character_count: int):
         return_text = str(text[:return_value_location]) + str(wrap_text(text[return_value_location:], character_count))
         return return_text
 
-def import_file(fileName: str)-> None:
+def import_file(fileName: str, volunteering=True)-> None:
     '''this whole thing likely will need to be changed based upon how we format the google sheet pretty much what it
     does is opens the .csv file and puts each row into a dictionary based upon the title at the top of the column
     then it checks to see if there is a person in the system already that matches the info in the row. if not it
     creates a new person and adds the entry to the person if there is it adds the entry to the person that it belongs
     to. the person identification is done using the email'''
-    for kstudent in students:
-        kstudent.clear()
-    if not fileName.lower().endswith(".csv"):
-        fileName = fileName + ".csv"
-    try:
-        with open(fileName, newline= '') as csvfile:
-            memberReader = csv.DictReader(csvfile, restval= "notes")
-            checker = False
-            for row in memberReader:
+    # temporary solutions are permanent solutions, you should know this
+
+    # clears hours entries
+    if (volunteering):
+        for kstudent in students:
+            kstudent.clear()
+        if not fileName.lower().endswith(".csv"):
+            fileName = fileName + ".csv"
+        try:
+            with open(fileName, newline= '') as csvfile:
+                memberReader = csv.DictReader(csvfile, restval= "notes")
                 checker = False
-                for member in students:
-                    if row['email'] == member.email:
-                        addNewActivity(row, member)
-                        checker = True
-                        break
-                if checker == False:
-                    newMember = student.Student(row["name"], row["grade"], row["email"])
-                    students.append(newMember)
-                    addNewActivity(row, newMember)
+                for row in memberReader:
+                    checker = False
+                    for member in students:
+                        if row['email'] == member.email:
+                            addNewActivity(row, member)
+                            checker = True
+                            break
+                    if checker == False:
+                        newMember = student.Student(row["name"], row["grade"], row["email"])
+                        students.append(newMember)
+                        addNewActivity(row, newMember)
+        except FileNotFoundError:
+            print("unable to find file.")  # this should change to something that will actually work with the GUI
+            error_label = customtkinter.CTkLabel(frame, text="Unable to find file")
+            error_label.grid(row=1, column=0, columnspan=2, padx=12, pady=8, sticky="nw")
+            frame.grid(ipady=0)
+    else:
+        raise customException.CustomException("Requirements not clarified: Are student emails or personal emails in "
+                                             "use for this?")
+        if not fileName.lower().endswith(".csv"):
+            fileName = fileName + ".csv"
+        try:
+            with open(fileName, newline= '') as csvfile:
+                memberReader = csv.DictReader(csvfile, restval= "notes")
+                checker = False
+                for row in memberReader:
+                    checker = False
+                    for member in students:
+                        if row['email'] == member.email:
+                            checker = True
+                            break
+                    if checker == False:
+                        newMember = student.Student(row["name"], row["grade"], row["email"])
+                        students.append(newMember)
+                        member.incrementAttendance()
+        except FileNotFoundError:
+            print("unable to find file.")  # this should change to something that will actually work with the GUI
+            error_label = customtkinter.CTkLabel(frame, text="Unable to find file")
+            error_label.grid(row=1, column=0, columnspan=2, padx=12, pady=8, sticky="nw")
+            frame.grid(ipady=0)
+
 
         error_label = customtkinter.CTkLabel(frame, text="Successfully imported files")
         error_label.grid(row=1, column=0, columnspan=2, padx=12, pady=8, sticky="nw")
         frame.grid(ipady=0)
 
-    except FileNotFoundError:
-        print("unable to find file.") #this should change to something that will actually work with the GUI
-        error_label = customtkinter.CTkLabel(frame, text="Unable to find file")
-        error_label.grid(row=1, column=0, columnspan=2, padx=12, pady=8, sticky="nw")
-        frame.grid(ipady=0)
+
 
 def addNewActivity(activity: dict, student: student.Student)-> None:
     """

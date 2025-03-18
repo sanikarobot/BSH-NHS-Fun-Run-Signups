@@ -9,7 +9,7 @@ class Student:
     next_student_id = 0
 
     def __init__(self, name: str, grade: int, email: str, notes: str = "", volunteerHours=0,
-                 tutorHours=0, status=0, attendence=0, log=None) -> None:
+                 tutorHours=0, status=0, attendance=0, log=None) -> None:
 
         """ Here we declare our varibles. 
         Because we do not want our name, email, grade, or status varibles to be easily changed we use properties to store then such that it is hard to accidentally change them
@@ -23,7 +23,7 @@ class Student:
         self.status = status
         self.volunteerHours = volunteerHours
         self.tutorHours = tutorHours
-        self.attedance = attendence
+        self.attendance = attendance
         self.student_id = Student.next_student_id
         Student.next_student_id = Student.next_student_id + 1
         self.log = log
@@ -38,7 +38,8 @@ class Student:
 
     @name.setter
     def name(self, name: str) -> None:
-        self._name = (name[0] + ". " + name[-3:])
+        self._name = self.truncate_name(name)
+
 
     @property
     def student_id(self) -> str:
@@ -87,10 +88,10 @@ class Student:
     
     @attendance.setter
     def attendance(self, attendance)-> None:
-        if not isinstance(int, attendance) == int:
-            raise customException ("Attendance must be an integer")
+        if not isinstance(attendance, int):
+            raise customException.CustomException("Attendance must be an integer")
         elif attendance < 0:
-            raise customException("Attendance must be a positive number")
+            raise customException.CustomException("Attendance must be a positive number")
         else:
             self._attendance = attendance
 
@@ -158,4 +159,23 @@ class Student:
 
     def incrementAttendance(self):
         self.attendance += 1
-        
+
+    @staticmethod
+    def truncate_name(name):
+        spacePosition = 0
+        for character in name:
+            if character == " ":
+                break
+            spacePosition = spacePosition + 1
+        name = (name[0] + "." + name[spacePosition:])
+        return name
+
+
+    def identify_email(self, email):
+        """
+        Identifies if the student's name corresponds with the email given
+        :return:
+        """
+        if email.contains(self.name[3:]) and (email[0] == self.name[0]):
+            return True
+        return False
